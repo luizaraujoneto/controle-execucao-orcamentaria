@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main role="main">
+
+    <div class="jumbotron">
+        <h1 class="display-4"> Welcome to C.E.O. App Home Page</h1>
+    </div>
+
+    <div class="row text-center" style="width: 100%;">
+        <div class="card text-white bg-success mb-3" style="max-width: 15%;">
+            <div class="card-header">Crédito Disponível</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{totalareceber|floatformat:2}}</h5>
+            </div>
+        </div>
+        <div class="card text-white bg-danger mb-3" style="max-width: 15%;">
+            <div class="card-header">Crédito Empenhado a Liquidar</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{totalapagar|floatformat:2}}</h5>
+            </div>
+        </div>
+        <div class="card text-white bg-warning mb-3" style="max-width: 15%;">
+            <div class="card-header">Crédito Empenhado em Liquidação</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{totalapagar|floatformat:2}}</h5>
+            </div>
+        </div>
+        <div class="card text-white bg-info mb-3" style="max-width: 15%;">
+            <div class="card-header">Crédito Empenhado Liquidadoa a Pagar</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{totalapagar|floatformat:2}}</h5>
+            </div>
+        </div>
+        <div class="card text-white bg-info mb-3" style="max-width: 15%;">
+            <div class="card-header">Crédito Empenhado Liquidado Pago</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{totalapagar|floatformat:2}}</h5>
+            </div>
+        </div>
+        <div class="card text-white bg-danger mb-3" style="max-width: 15%;">
+            <div class="card-header">Crédito Pré-Empenhado</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{totalapagar|floatformat:2}}</h5>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" colspan="4" class="text-center">Tipo de Despesa</th>
+            </tr>
+            <tr>
+                <th scope="col">Data</th>
+                <th scope="col">UG</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in ultimasvendas %}
+            <tr>
+                <td>{{row.0}}</td>
+                <td>{{row.1}}</td>
+                <td>{{row.2}}</td>
+                <td>R$ {{row.3|floatformat:2}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" colspan="4" class="text-center">Etapa do Crédito</th>
+            </tr>
+            <tr>
+                <th scope="col">Data</th>
+                <th scope="col">UG</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in ultimospagamentos %}
+            <tr>
+                <td>{{row.0}}</td>
+                <td>{{row.1}}</td>
+                <td>{{row.2}}</td>
+                <td>R$ {{row.3|floatformat:2}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</main>
+
+{% endblock content %}
