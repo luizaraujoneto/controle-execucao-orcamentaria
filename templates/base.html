@@ -33,66 +33,66 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-md navbar-light fixed-top " style="background-color: #900C3F;">
-        <span class=" navbar-brand mb-0 h1" style="color:#ffe484">
+    <nav class="navbar navbar-expand-md navbar-light fixed-top " style="background-color: #19488c;">
+        <span class=" navbar-brand mb-0 h1" style="color:#dde1e7 ">
             C.E.O. {% if DEBUG %} [Homologação] {% endif %}
         </span>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'home' %}" style="color:#ffe484">Início <span
+                    <a class="nav-link" href="{% url 'home' %}" style="color:#dde1e7 ">Início <span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="{ url 'Tipo de Despesas' }" style="color:#ffe484">Clientes</a>
+                    <a class="nav-link" href="{ url 'Tipo de Despesas' }" style="color:#dde1e7 ">Clientes</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false" style="color:#ffe484">Tabelas Básicas</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown01" style="background-color: #900C3F;">
-                        <a class="dropdown-item" href="{ % url 'pedidos' % }" style="color:#ffe484">Unidades</a>
-                        <a class="dropdown-item" href="{ % url 'notasfiscais' % }" style="color:#ffe484">Despesas Agregadas</a>
+                        aria-haspopup="true" aria-expanded="false" style="color:#dde1e7 ">Tabelas Básicas</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01" style="background-color: #19488c;">
+                        <a class="dropdown-item" href="{ % url 'pedidos' % }" style="color:#dde1e7 ">Unidades</a>
+                        <a class="dropdown-item" href="{ % url 'notasfiscais' % }" style="color:#dde1e7 ">Despesas Agregadas</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false" style="color:#ffe484">Consultas</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown01" style="background-color: #900C3F;">
+                        aria-haspopup="true" aria-expanded="false" style="color:#dde1e7 ">Consultas</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01" style="background-color: #19488c;">
                         <a class="dropdown-item" href="{ % url 'Quadro Geral' % }"
-                            style="color:#ffe484">Quadro Geral </a>
-                        <a class="dropdown-item" href="{ % url 'consulta_contas_receber' % }" style="color:#ffe484">
+                            style="color:#dde1e7 ">Quadro Geral </a>
+                        <a class="dropdown-item" href="{ % url 'consulta_contas_receber' % }" style="color:#dde1e7 ">
                             Previsão de Pagamentos</a>
                         <a class="dropdown-item" href="{ % url 'consulta_pagamentos_confirmados' % }"
-                            style="color:#ffe484">Pagamentos Confirmados</a>
+                            style="color:#dde1e7 ">Pagamentos Confirmados</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{ % url 'consulta_vendas' % }" style="color:#ffe484">Vendas por
+                        <a class="dropdown-item" href="{ % url 'consulta_vendas' % }" style="color:#dde1e7 ">Vendas por
                             Mês/Ano </a>
                         <a class="dropdown-item" href="{ % url 'consulta_produtos_disponiveis' % }"
-                            style="color:#ffe484">Créditos Disponíveis</a>
-                        <!--<a class="dropdown-item" href="{  % url 'consulta_produtos' %  }" style="color:#ffe484">Produtos</a>-->
+                            style="color:#dde1e7 ">Créditos Disponíveis</a>
+                        <!--<a class="dropdown-item" href="{  % url 'consulta_produtos' %  }" style="color:#dde1e7 ">Produtos</a>-->
 
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{ % url 'consulta_contaspagar' % }" style="color:#ffe484">Contas a
+                        <a class="dropdown-item" href="{ % url 'consulta_contaspagar' % }" style="color:#dde1e7 ">Contas a
                             Pagar por Mês/Ano </a>
-                        <a class="dropdown-item" href="{ % url 'consulta_saldonotafiscal' % }" style="color:#ffe484">Notas
+                        <a class="dropdown-item" href="{ % url 'consulta_saldonotafiscal' % }" style="color:#dde1e7 ">Notas
                             Fiscais com Saldo em Aberto</a>
 
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{ % url 'consulta_fluxocaixa' % }" style="color:#ffe484">Fluxo de
+                        <a class="dropdown-item" href="{ % url 'consulta_fluxocaixa' % }" style="color:#dde1e7 ">Fluxo de
                             Caixa </a>
                         <a class="dropdown-item" href="{ % url 'consulta_movimentomensal' % }"
-                            style="color:#ffe484">Movimento Mensal de Caixa e Mercadorias </a>
+                            style="color:#dde1e7 ">Movimento Mensal de Caixa e Mercadorias </a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'about' %}" style="color:#ffe484">Sobre</a>
+                    <a class="nav-link active" href="{% url 'about' %}" style="color:#dde1e7 ">Sobre</a>
                 </li>
 
             </ul>
             {% if user.is_authenticated %}
-            <span class="navbar-text" style="color:#ffe484"> Usuário: {{user.username}},
-                <a class="navbar-text" href="{ % url 'logout' % }" style="color:#ffe484">
+            <span class="navbar-text" style="color:#dde1e7 "> Usuário: {{user.username}},
+                <a class="navbar-text" href="{ % url 'logout' % }" style="color:#dde1e7 ">
                     Logout</a>
             </span>
             {% endif %}
