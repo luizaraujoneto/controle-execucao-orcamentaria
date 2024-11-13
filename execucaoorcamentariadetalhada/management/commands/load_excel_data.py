@@ -1,7 +1,7 @@
 import pandas as pd
 from django.core.management.base import BaseCommand
 
-from  execucaoorcamentariadetalhada.models import UGResponsavel, GrupoDespesa, GrupoDespesa
+from  execucaoorcamentariadetalhada.models import UGResponsavel, AcaoGoverno, AcaoGoverno, EtapaCredito, DespesaAgregada, GrupoDespesa
 
 class Command(BaseCommand):
     help = "Load data from Excel file into Django models"
@@ -18,6 +18,8 @@ class Command(BaseCommand):
         self.loadUGResponsavel(df)
         self.loadDespesaAgregada(df)
         self.loadGrupoDespesa(df)
+        self.loadAcaoGoverno(df)
+        self.loadEtapaCredito(df)
 
         self.stdout.write(self.style.SUCCESS("Data loaded successfully from Excel file."))
 
@@ -54,12 +56,12 @@ class Command(BaseCommand):
 
         despesa = despesa.sort_values(by='PI Nome')
 
-        GrupoDespesa.objects.all().delete()
+        AcaoGoverno.objects.all().delete()
 
         for _, row in despesa.iterrows():
-            GrupoDespesa.objects.get_or_create(codigo=row['PI Código PI'], nome=row['PI Nome'])
+            AcaoGoverno.objects.get_or_create(codigo=row['PI Código PI'], nome=row['PI Nome'])
 
-        despesas = GrupoDespesa.objects.all()
+        despesas = AcaoGoverno.objects.all()
         
         print("Despesa Agregada-----------------------------------------------------------------------------")
 
@@ -76,12 +78,12 @@ class Command(BaseCommand):
 
         grupoDespesa = grupoDespesa.sort_values(by='Grupo Despesa Nome')
 
-        GrupoDespesa.objects.all().delete()
+        AcaoGoverno.objects.all().delete()
 
         for _, row in grupoDespesa.iterrows():
-            GrupoDespesa.objects.get_or_create(codigo=row['Grupo Despesa Código Grupo'], nome=row['Grupo Despesa Nome'])
+            AcaoGoverno.objects.get_or_create(codigo=row['Grupo Despesa Código Grupo'], nome=row['Grupo Despesa Nome'])
 
-        gruposDespesas = GrupoDespesa.objects.all()
+        gruposDespesas = AcaoGoverno.objects.all()
         
         print("Grupo Despesa-----------------------------------------------------------------------------")
 
@@ -90,3 +92,48 @@ class Command(BaseCommand):
 
         print('')
 
+
+    def loadEtapaCredito(self, df):
+
+        etapaCredito = df[ ['Conta Contábil']]
+
+        etapaCredito = etapaCredito.drop_duplicates()
+
+       # EtapaCredito = EtapaCredito.sort_values(by='Grupo Despesa Nome')
+
+        EtapaCredito.objects.all().delete()
+
+        for _, row in etapaCredito.iterrows():
+            EtapaCredito.objects.get_or_create(nome=row['Conta Contábil'])
+
+        etapasCredito = EtapaCredito.objects.all()
+        
+        print("Etapa Crédito-----------------------------------------------------------------------------")
+
+        for etapaCredito in etapasCredito:
+            print(etapaCredito.nome )
+
+        print('')
+
+
+    def loadAcaoGoverno(self, df):
+
+        acaoGoverno = df[ ['Ação Governo Código', 'Ação Governo Nome']]
+
+        acaoGoverno = acaoGoverno.drop_duplicates()
+
+        acaoGoverno = acaoGoverno.sort_values(by='Ação Governo Nome')
+
+        AcaoGoverno.objects.all().delete()
+
+        for _, row in acaoGoverno.iterrows():
+            AcaoGoverno.objects.get_or_create(codigo=row['Ação Governo Código'], nome=row['Ação Governo Nome'])
+
+        acoesGoverno = AcaoGoverno.objects.all()
+        
+        print("Ação Governo-----------------------------------------------------------------------------")
+
+        for acaoGoverno in acoesGoverno:
+            print(acaoGoverno.codigo + ' - ' + acaoGoverno.nome )
+
+        print('')
