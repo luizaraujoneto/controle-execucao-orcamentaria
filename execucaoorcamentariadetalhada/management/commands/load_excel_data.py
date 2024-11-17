@@ -1,7 +1,8 @@
+from decimal import Decimal
 import pandas as pd
 from django.core.management.base import BaseCommand
 
-from  execucaoorcamentariadetalhada.models import UGResponsavel, AcaoGoverno, AcaoGoverno, EtapaCredito, DespesaAgregada, GrupoDespesa
+from  execucaoorcamentariadetalhada.models import UGResponsavel, AcaoGoverno, AcaoGoverno, EtapaCredito, DespesaAgregada, GrupoDespesa, NaturezaDespesa, ExecucaoDetalhada
 
 class Command(BaseCommand):
     help = "Load data from Excel file into Django models"
@@ -15,11 +16,23 @@ class Command(BaseCommand):
 
         df = pd.read_excel(file_path, header=1)
 
+        df = df[df['Mês Lançamento'] == 'OUT/2024']
+
+        ExecucaoDetalhada.objects.all().delete()
+
         self.loadUGResponsavel(df)
         self.loadDespesaAgregada(df)
         self.loadGrupoDespesa(df)
+        self.loadNaturezaDespesa(df)
         self.loadAcaoGoverno(df)
         self.loadEtapaCredito(df)
+        self.loadExecucaoDetalhada(df)
+
+        self.printAcaoGoverno()
+        self.printDespesaAgregada()
+        self.printEtapaCredito()
+        self.printGrupoDespesa()
+        self.printNaturezaDespesa()
 
         self.stdout.write(self.style.SUCCESS("Data loaded successfully from Excel file."))
 
@@ -30,7 +43,7 @@ class Command(BaseCommand):
 
         unidade = unidade.drop_duplicates()
 
-        unidade = unidade[unidade['UG Responsável Nome'].str.startswith('UGR -')]
+        # unidade = unidade[unidade['UG Responsável Nome'].str.startswith('UGR -')]
 
         unidade = unidade.sort_values(by='UG Responsável Nome')
 
@@ -39,6 +52,9 @@ class Command(BaseCommand):
         for _, row in unidade.iterrows():
             UGResponsavel.objects.get_or_create(codigo=row['UG Responsável Código'], nome=row['UG Responsável Nome'])
 
+    
+    def printUGResponsavel(self ):
+    
         unidades = UGResponsavel.objects.all()
         
         print("UG Responsavel-----------------------------------------------------------------------------")
@@ -48,6 +64,7 @@ class Command(BaseCommand):
 
         print("")
 
+
     def loadDespesaAgregada(self, df):
 
         despesa = df[ ['PI Código PI', 'PI Nome']]
@@ -56,12 +73,15 @@ class Command(BaseCommand):
 
         despesa = despesa.sort_values(by='PI Nome')
 
-        AcaoGoverno.objects.all().delete()
+        DespesaAgregada.objects.all().delete()
 
         for _, row in despesa.iterrows():
-            AcaoGoverno.objects.get_or_create(codigo=row['PI Código PI'], nome=row['PI Nome'])
+            DespesaAgregada.objects.get_or_create(codigo=row['PI Código PI'], nome=row['PI Nome'])
 
-        despesas = AcaoGoverno.objects.all()
+
+    def printDespesaAgregada(self):
+
+        despesas = DespesaAgregada.objects.all()
         
         print("Despesa Agregada-----------------------------------------------------------------------------")
 
@@ -69,6 +89,7 @@ class Command(BaseCommand):
             print(despesa.codigo + ' - ' + despesa.nome )
 
         print("")
+
 
     def loadGrupoDespesa(self, df):
 
@@ -83,12 +104,41 @@ class Command(BaseCommand):
         for _, row in grupoDespesa.iterrows():
             AcaoGoverno.objects.get_or_create(codigo=row['Grupo Despesa Código Grupo'], nome=row['Grupo Despesa Nome'])
 
+
+    def printGrupoDespesa(self):
+
         gruposDespesas = AcaoGoverno.objects.all()
         
         print("Grupo Despesa-----------------------------------------------------------------------------")
 
         for grupoDespesa in gruposDespesas:
             print(grupoDespesa.codigo + ' - ' + grupoDespesa.nome )
+
+        print('')
+
+
+    def loadNaturezaDespesa(self, df):
+
+        naturezaDespesa = df[ ['Natureza Despesa Código', 'Natureza Despesa Nome']]
+
+        naturezaDespesa = naturezaDespesa.drop_duplicates()
+
+        naturezaDespesa = naturezaDespesa.sort_values(by='Natureza Despesa Nome')
+
+        NaturezaDespesa.objects.all().delete()
+
+        for _, row in naturezaDespesa.iterrows():
+            NaturezaDespesa.objects.get_or_create(codigo=row['Natureza Despesa Código'], nome=row['Natureza Despesa Nome'])
+
+    
+    def printNaturezaDespesa(self):
+
+        naturezasDespesas = NaturezaDespesa.objects.all()
+        
+        print("Natureza Despesa-----------------------------------------------------------------------------")
+
+        for naturezaDespesa in naturezasDespesas:
+            print(naturezaDespesa.codigo + ' - ' + naturezaDespesa.nome )
 
         print('')
 
@@ -105,6 +155,9 @@ class Command(BaseCommand):
 
         for _, row in etapaCredito.iterrows():
             EtapaCredito.objects.get_or_create(nome=row['Conta Contábil'])
+
+    
+    def printEtapaCredito(self ):
 
         etapasCredito = EtapaCredito.objects.all()
         
@@ -129,6 +182,9 @@ class Command(BaseCommand):
         for _, row in acaoGoverno.iterrows():
             AcaoGoverno.objects.get_or_create(codigo=row['Ação Governo Código'], nome=row['Ação Governo Nome'])
 
+    
+    def printAcaoGoverno(self):
+
         acoesGoverno = AcaoGoverno.objects.all()
         
         print("Ação Governo-----------------------------------------------------------------------------")
@@ -137,3 +193,41 @@ class Command(BaseCommand):
             print(acaoGoverno.codigo + ' - ' + acaoGoverno.nome )
 
         print('')
+
+
+    def loadExecucaoDetalhada(self, df):
+
+        execucaoDetalhada = df[ df['Mês Lançamento'] == 'OUT/2024' ]
+
+        for _, row in execucaoDetalhada.iterrows():
+
+            try:
+
+                ag = AcaoGoverno.objects.get(codigo=row['Ação Governo Código'])
+                ugr = UGResponsavel.objects.get(codigo=row['UG Responsável Código'])
+                da = DespesaAgregada.objects.get(codigo=row['PI Código PI'])
+                gd = GrupoDespesa.objects.get(codigo=row['Grupo Despesa Código Grupo'])
+                nd = NaturezaDespesa.objects.get(codigo=row['Natureza Despesa Código'])
+                ec = EtapaCredito.objects.get(nome=row['Conta Contábil'])
+                saldo = Decimal( row['Saldo - R$ (Conta Contábil)'] )
+
+                ExecucaoDetalhada.objects.get_or_create( acaoGoverno=ag, 
+                                        ugResponsavel=ugr,
+                                        despesaAgregada=da,
+                                        grupoDespesa=gd,
+                                        naturezaDespesa=nd,
+                                        etapaCredito=ec,
+                                        saldo=saldo )
+
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+        ed = ExecucaoDetalhada.objects.all()
+
+        print("Execucao Detalhada-----------------------------------------------------------------------------")
+
+        for execucaoDetalhada in ed:
+            print(execucaoDetalhada.acaoGoverno.nome + ' - ' + execucaoDetalhada.ugResponsavel.nome + " - " +  str( execucaoDetalhada.saldo) )
+
+        print('')
+
