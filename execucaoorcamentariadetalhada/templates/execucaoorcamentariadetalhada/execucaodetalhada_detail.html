@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main role="main">
+
+    <div class="jumbotron">
+        <h1 class="display-4"> Execução ORçamentária Detalhada  </h1>
+    </div>
+
+    <div class="container">
+        <p>
+            <a class="btn btn-outline-info"
+                href="{% url 'execucaodetalhada_list' %}" role="button"
+                title="Voltar para lista de Execução Orçamentária Detalhada">
+                <i class="bi bi-list-columns-reverse"></i>
+                Lista de Execução Orçamentária Detalhada</a>
+        </p>
+
+        <div class="card" style="align-items: center;">
+            <div class="card-body" style="align-items: center;width:60%;">
+                <p class="card-text">
+                <table class="table" style="width:100%">
+                    <tr>
+                        <td style="width: 30%; min-width: 25%;">Mês Lançamento </td>
+                        <td>{{execucaodetalhada.mesLancamento}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%; min-width: 25%;">Ação Governo</td>
+                        <td>{{execucaodetalhada.acaoGoverno.codigo}} - {{execucaodetalhada.acaoGoverno.nome}} </td>
+                    </tr>
+                    <tr>
+                        <td>UG Responsável</td>
+                        <td>{{execucaodetalhada.ugResponsavel.codigo}} - {{execucaodetalhada.ugResponsavel.nome}}</td>
+                    </tr>
+                    <tr>
+                        <td>Despesa Agregada</td>
+                        <td>{{execucaodetalhada.despesaAgregada.codigo}} - {{execucaodetalhada.despesaAgregada.nome}}</td>
+                    </tr>
+                    <tr>
+                        <td>Grupo de Despesa</td>
+                        <td>{{execucaodetalhada.grupoDespesa.codigo}} - {{execucaodetalhada.grupoDespesa.nome}}</td>
+                    </tr>
+                    <tr>
+                        <td>Natureza da Despesa</td>
+                        <td>{{execucaodetalhada.naturezaDespesa.codigo}} - {{execucaodetalhada.naturezaDespesa.nome}}</td>
+                    </tr>
+                    <tr>
+                        <td>Etapa Crédito</td>
+                        <td>{{execucaodetalhada.etapaCredito.nome}}</td>
+                    </tr>
+                    <tr>
+                        <td>Saldo</td>
+                        <td>{{execucaodetalhada.saldo|default_if_none:"---"}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="2">
+                            <p>
+                                <a class="btn btn-outline-info"
+                                    href="{% url 'execucaodetalhada_list' %}" role="button"
+                                    title="Voltar para lista de Execução Orçamentária Detalhada">
+                                    <i class="bi bi-list-columns-reverse"></i>
+                                    Voltar</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                </p>
+            </div> <!-- card-body -->
+        </div> <!-- card -->
+    </div> <!-- container -->
+
+</main>
+
+
+{% endblock content %}
+
+
+
+mesLancamento
+acaoGoverno 
+ugResponsavel
+despesaAgregada
+grupoDespesa
+naturezaDespesa
+etapaCredito
+saldo
