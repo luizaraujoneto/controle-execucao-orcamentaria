@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
         df = pd.read_excel(file_path, header=1)
 
-        df = df[df['Mês Lançamento'] == 'OUT/2024']
+        # df = df[df['Mês Lançamento'] == 'OUT/2024']
 
         ExecucaoDetalhada.objects.all().delete()
 
@@ -197,12 +197,13 @@ class Command(BaseCommand):
 
     def loadExecucaoDetalhada(self, df):
 
-        execucaoDetalhada = df[ df['Mês Lançamento'] == 'OUT/2024' ]
+        execucaoDetalhada = df
 
         for _, row in execucaoDetalhada.iterrows():
 
             try:
 
+                ml = row['Mês Lançamento']
                 ag = AcaoGoverno.objects.get(codigo=row['Ação Governo Código'])
                 ugr = UGResponsavel.objects.get(codigo=row['UG Responsável Código'])
                 da = DespesaAgregada.objects.get(codigo=row['PI Código PI'])
@@ -211,7 +212,9 @@ class Command(BaseCommand):
                 ec = EtapaCredito.objects.get(nome=row['Conta Contábil'])
                 saldo = Decimal( row['Saldo - R$ (Conta Contábil)'] )
 
-                ExecucaoDetalhada.objects.get_or_create( acaoGoverno=ag, 
+                ExecucaoDetalhada.objects.get_or_create( 
+                                        mesLancamento=ml,
+                                        acaoGoverno=ag, 
                                         ugResponsavel=ugr,
                                         despesaAgregada=da,
                                         grupoDespesa=gd,

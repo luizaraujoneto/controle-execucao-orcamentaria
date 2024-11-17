@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'execucaoorcamentariadetalhada'
+    "django.contrib.humanize",
+    "django_tables2",
+    'execucaoorcamentariadetalhada.apps.ExecucaoorcamentariadetalhadaConfig',
 ]
 
 MIDDLEWARE = [
@@ -104,7 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "pt-br"
+
+LOCALE_NAME = "pt_BR"
 
 TIME_ZONE = 'UTC'
 

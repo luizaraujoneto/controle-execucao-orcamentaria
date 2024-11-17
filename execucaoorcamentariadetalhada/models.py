@@ -1,5 +1,7 @@
 from django.db import models
 
+import django_tables2 as tables
+
 # Create your models here.
 
 class UGResponsavel(models.Model):
@@ -18,6 +20,9 @@ class UGResponsavel(models.Model):
         blank=False,
         null=False,
     )
+
+    def __str__(self):
+        return self.codigo + ' - ' + self.nome
 
     class Meta:
         managed = True
@@ -41,6 +46,9 @@ class DespesaAgregada(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return self.codigo + ' - ' + self.nome
+
     class Meta:
         managed = True
         db_table = "DespesaAgregada"        
@@ -63,6 +71,9 @@ class GrupoDespesa(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return self.codigo + ' - ' + self.nome
+
     class Meta:
         managed = True
         db_table = "GrupoDespesa"                
@@ -77,6 +88,9 @@ class EtapaCredito(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return self.nome
+    
     class Meta:
         managed = True
         db_table = "EtapaCredito" 
@@ -99,6 +113,9 @@ class AcaoGoverno(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return self.codigo + ' - ' + self.nome
+    
     class Meta:
         managed = True
         db_table = "AcaoGoverno" 
@@ -121,12 +138,23 @@ class NaturezaDespesa(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return self.codigo + ' - ' + self.nome
+    
     class Meta:
         managed = True
         db_table = "NaturezaDespesa" 
 
                             
 class ExecucaoDetalhada(models.Model):
+    
+    mesLancamento = models.CharField(
+        db_column="mesLancamento",
+        max_length=10,
+        blank=False,
+        null=False,
+    )
+
     
     acaoGoverno = models.ForeignKey(
         "AcaoGoverno",
@@ -189,3 +217,8 @@ class ExecucaoDetalhada(models.Model):
         max_digits=10,
         decimal_places=2,
     )
+
+
+class ExecucaoDetalhadaTable(tables.Table):
+    class Meta:
+        model = ExecucaoDetalhada
