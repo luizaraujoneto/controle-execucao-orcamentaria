@@ -31,7 +31,7 @@
                         </td>
                         {% endfor %}
                         <td style="min-width: 90px;" class="align-middle text-center">
-                            <a href="{ % url 'url_destino' row.record.codvenda % }"
+                            <a href="{% url 'execucaodetalhada_detail' row.record.id %}"
                                 class="btn btn-outline-info px-2 py-1"><i class="bi bi-file-ruled bi-sm"
                                     title="Detalhes"></i> </a>
                         </td>
