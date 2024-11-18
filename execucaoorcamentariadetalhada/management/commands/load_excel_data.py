@@ -2,7 +2,8 @@ from decimal import Decimal
 import pandas as pd
 from django.core.management.base import BaseCommand
 
-from  execucaoorcamentariadetalhada.models import UGResponsavel, AcaoGoverno, AcaoGoverno, EtapaCredito, DespesaAgregada, GrupoDespesa, NaturezaDespesa, ExecucaoDetalhada
+from  execucaoorcamentariadetalhada.models import UGResponsavel, AcaoGoverno, AcaoGoverno, EtapaCredito, MesLancamento
+from  execucaoorcamentariadetalhada.models import DespesaAgregada, GrupoDespesa, NaturezaDespesa, ExecucaoDetalhada
 
 class Command(BaseCommand):
     help = "Load data from Excel file into Django models"
@@ -20,6 +21,7 @@ class Command(BaseCommand):
 
         ExecucaoDetalhada.objects.all().delete()
 
+        self.loadMesLancamento(df)
         self.loadUGResponsavel(df)
         self.loadDespesaAgregada(df)
         self.loadGrupoDespesa(df)
@@ -165,6 +167,32 @@ class Command(BaseCommand):
 
         for etapaCredito in etapasCredito:
             print(etapaCredito.nome )
+
+        print('')
+
+
+    def loadMesLancamento(self, df):
+
+        mesLancamento = df[ ['Mês Lançamento']]
+
+        mesLancamento = mesLancamento.drop_duplicates()
+
+        # mesLancamento = mesLancamento.sort_values(by='Mês Lançamento')
+
+        MesLancamento.objects.all().delete()
+
+        for _, row in mesLancamento.iterrows():
+            MesLancamento.objects.get_or_create(mesLancamento=row['Mês Lançamento'])
+
+    
+    def printMesLancamento(self ):
+
+        mesesLancamento = MesLancamento.objects.all()
+        
+        print("Mês Lançamento-----------------------------------------------------------------------------")
+
+        for mes in mesesLancamento:
+            print(mes.mesLancamento )
 
         print('')
 

@@ -4,8 +4,50 @@ import django_tables2 as tables
 
 # Create your models here.
 
-class UGResponsavel(models.Model):
+class MesLancamento(models.Model):
+
+    mesLancamento = models.CharField(
+        db_column="mesLancamento",
+        max_length=150,
+        blank=False,
+        null=False,
+    )
+
+    def __str__(self):
+        return self.mesLancamento
+
+    class Meta:
+        managed = True
+        db_table = "mesLancamento"
+ 
+
+class AcaoGoverno(models.Model):
     
+    codigo = models.CharField(
+        db_column="codigoAcaoGoverno", 
+        max_length=15,
+        blank=False,
+        null=False,
+        primary_key=True,
+    )
+
+    nome = models.CharField(
+        db_column="nomeAcaoGoverno",
+        max_length=150,
+        blank=False,
+        null=False,
+    )
+
+    def __str__(self):
+        return self.codigo + ' - ' + self.nome
+    
+    class Meta:
+        managed = True
+        db_table = "AcaoGoverno" 
+
+
+class UGResponsavel(models.Model):
+
     codigo = models.CharField(
         db_column="codigoUGResponsavel", 
         max_length=15,
@@ -79,48 +121,6 @@ class GrupoDespesa(models.Model):
         db_table = "GrupoDespesa"                
         
 
-class EtapaCredito(models.Model):
-
-    nome = models.CharField(
-        db_column="nomeEtapaCredito",
-        max_length=150,
-        blank=False,
-        null=False,
-    )
-
-    def __str__(self):
-        return self.nome
-    
-    class Meta:
-        managed = True
-        db_table = "EtapaCredito" 
-
-
-class AcaoGoverno(models.Model):
-    
-    codigo = models.CharField(
-        db_column="codigoAcaoGoverno", 
-        max_length=15,
-        blank=False,
-        null=False,
-        primary_key=True,
-    )
-
-    nome = models.CharField(
-        db_column="nomeAcaoGoverno",
-        max_length=150,
-        blank=False,
-        null=False,
-    )
-
-    def __str__(self):
-        return self.codigo + ' - ' + self.nome
-    
-    class Meta:
-        managed = True
-        db_table = "AcaoGoverno" 
-
- 
 class NaturezaDespesa(models.Model):
     
     codigo = models.CharField(
@@ -144,6 +144,23 @@ class NaturezaDespesa(models.Model):
     class Meta:
         managed = True
         db_table = "NaturezaDespesa" 
+
+
+class EtapaCredito(models.Model):
+
+    nome = models.CharField(
+        db_column="nomeEtapaCredito",
+        max_length=150,
+        blank=False,
+        null=False,
+    )
+
+    def __str__(self):
+        return self.nome
+    
+    class Meta:
+        managed = True
+        db_table = "EtapaCredito" 
 
                             
 class ExecucaoDetalhada(models.Model):

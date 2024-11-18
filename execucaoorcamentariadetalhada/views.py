@@ -19,11 +19,14 @@ def execucaoDetalhada_list(request):
 
     # Aplicar os filtros
     if filter_form.is_valid():
+        mesLancamento = filter_form.cleaned_data.get('mesLancamento')
         ugResponsavel = filter_form.cleaned_data.get('ugResponsavel')
         etapaCredito = filter_form.cleaned_data.get('etapaCredito')
 
+        if mesLancamento:
+            queryset = queryset.filter(mesLancamento=mesLancamento)  
         if ugResponsavel:
-            queryset = queryset.filter(ugResponsavel=ugResponsavel)  # Substitua "nome" pelo campo adequado
+            queryset = queryset.filter(ugResponsavel=ugResponsavel)  
         if etapaCredito:
             queryset = queryset.filter(etapaCredito=etapaCredito)
 
