@@ -22,14 +22,17 @@
                 </h5>
                 <!-- Formulário de Filtro -->
                 <form method="get">
-                    <div class="row">
+                    <div class="row">                        
                         <div class="col-mb-1">
+                            {{ filter_form.mesLancamento.label}}
                             {{ filter_form.mesLancamento }}
                         </div>
                         <div class="col-mb-1">
+                            {{ filter_form.ugResponsavel.label }}
                             {{ filter_form.ugResponsavel }}
                         </div>
                         <div class="col-mb-1">
+                            {{ filter_form.etapaCredito.label }}
                             {{ filter_form.etapaCredito }}
                         </div>
                         <div class="col-mb-1">
